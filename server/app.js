@@ -3,13 +3,14 @@ import createError from "http-errors";
 // import { join } from "path";
 import colors from "colors";
 import cookieParser from "cookie-parser";
-import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
-dotenv.config()
+import * as dotenv from "dotenv"; // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+dotenv.config();
+
 import cors from "cors";
 import dbConnect from "./config/dbConnect.js";
+import errorHandler from "./middleware/error.middleware.js";
 // import router
-import indexRoute from "./routes/index.js";
-import usersRoute from "./routes/users.js";
+import usersRoute from "./routes/user.js";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -25,8 +26,10 @@ app.use(cookieParser());
 // app.use(static(join(__dirname, "public")));
 
 // routes
-app.use("/api/", indexRoute);
 app.use("/api/users", usersRoute);
+
+// error middleware
+app.use(errorHandler);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
