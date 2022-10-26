@@ -1,13 +1,13 @@
 import { Router } from "express";
 const router = Router();
 import {
-  createUser,
-  getUser,
-  getUsers,
-} from "../controllers/userController.js";
+  getGalleries,
+  createGallery,
+  deleteGallery,
+} from "../controllers/galleryController.js";
 
-// create crud routes
-router.route("/").post(createUser).get(getUsers);
-router.route("/:id").get(getUser);
+// create crud routes for gallery
+router.route("/").post(createGallery).get(getGalleries);
+router.route("/:id").get(deleteGallery);
 
 export default router;
