@@ -37,7 +37,6 @@ const createGallery = asyncHandler(async (req, res) => {
         success: true,
         createdGallery: createGallery,
         updatedUser: updateUser,
-        msg: "updated",
       });
     } else {
       res.status(400);
@@ -50,26 +49,28 @@ const createGallery = asyncHandler(async (req, res) => {
 // @route DELETE /api/gallery/:id
 // @access private
 const deleteGallery = asyncHandler(async (req, res) => {
-  const { galleryId } = req.params;
-  const { ownerId } = req.body;
-  if (!galleryId || !ownerId) {
+  const { id } = req.params;
+  const { galleryOwner, userId } = req.body;
+
+  if (!userId || !galleryOwner) {
     res.status(400);
-    throw new Error("Gallery or User Not Found");
+    throw new Error("Invalid infomation");
   }
   // verify owner
-  const owner = await User.findById(ownerId);
-  if (!owner) {
-    res.status(400);
-    throw new Error("User not found");
-  }
+  // const owner = await User.findById(galleryOwner);
+  // if (!owner) {
+  //   res.status(400);
+  //   throw new Error("User not found");
+  // }
 
   // check to confirm the signed in user is the owner
-  if (owner.gallery.toString() !== galleryId) {
+  // pass sined in user id and gallery owner id
+  if (userId !== galleryOwner) {
     res.status(401);
     throw new Error("User not authorized");
   }
 
-  await Gallery.deleteOne({ _id: galleryId });
+  await Gallery.deleteOne({ _id: id });
   res.status(200).json({ msg: "Gallery deleted" });
 });
 
