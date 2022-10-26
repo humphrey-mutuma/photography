@@ -8,9 +8,9 @@ dotenv.config();
 
 import cors from "cors";
 import dbConnect from "./config/dbConnect.js";
-import errorHandler from "./middleware/error.middleware.js";
+import errorHandler from "./middleware/errorMiddleware.js";
 // import router
-import usersRoute from "./routes/user.js";
+import usersRoute from "./routes/userRoute.js";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
