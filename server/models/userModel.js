@@ -20,6 +20,10 @@ const userSchema = new Schema(
       type: String,
       // required: [true, "Please add  bio"],
     },
+    gallery: {
+      type: Schema.Types.ObjectId,
+      ref: "Gallery",
+    },
   },
   {
     timestamps: true,

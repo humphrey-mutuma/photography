@@ -1,7 +1,8 @@
 import asyncHandler from "express-async-handler";
 import Gallery from "../models/galleryModel.js";
+import User from "../models/userModel.js";
 
-// @desc get gallery
+// @desc get galleries
 // @route GET /api/galleries
 // @access Public
 const getGalleries = asyncHandler(async (req, res) => {
@@ -14,9 +15,9 @@ const getGalleries = asyncHandler(async (req, res) => {
 // @access private
 const createGallery = asyncHandler(async (req, res) => {
   const { owner, description, photos } = req.body;
-  if (!owner || !description || !photos) {
+  if (!owner || !description) {
     res.status(400);
-    throw new Error("Please add a name, description and photos");
+    throw new Error("Please add a user, description and photos");
   }
 
   const createGallery = await Gallery.create({
@@ -25,34 +26,51 @@ const createGallery = asyncHandler(async (req, res) => {
     photos,
   });
   if (createGallery) {
-    res.status(201).json(createGallery);
+    // res.status(201).json(createGallery);
+    // update users gallery with the newly created gallery id
+    const updateUser = await User.updateOne(
+      { _id: createGallery.owner },
+      { gallery: createGallery.id }
+    );
+    if (updateUser) {
+      res.status(201).json({
+        success: true,
+        createdGallery: createGallery,
+        updatedUser: updateUser,
+        msg: "updated",
+      });
+    } else {
+      res.status(400);
+      throw new Error("Gallery Not created or user gallery not updated");
+    }
   }
 });
 
 // @desc delete gallery
 // @route DELETE /api/gallery/:id
 // @access private
-
 const deleteGallery = asyncHandler(async (req, res) => {
-  const gallery = await Gallery.findById(req.params.id);
-  if (!gallery) {
+  const { galleryId } = req.params;
+  const { ownerId } = req.body;
+  if (!galleryId || !ownerId) {
     res.status(400);
-    throw new Error("Gallery not found");
+    throw new Error("Gallery or User Not Found");
   }
-  const owner = await User.findById(req.owner.id);
+  // verify owner
+  const owner = await User.findById(ownerId);
   if (!owner) {
     res.status(400);
-    throw new Error("Owner not found");
+    throw new Error("User not found");
   }
 
   // check to confirm the signed in user is the owner
-
-  if (gallery.owner.toString() !== owner.id) {
+  if (owner.gallery.toString() !== galleryId) {
     res.status(401);
     throw new Error("User not authorized");
   }
 
-  await gallery.deleteOne({ _id: req.params.id });
+  await Gallery.deleteOne({ _id: galleryId });
+  res.status(200).json({ msg: "Gallery deleted" });
 });
 
 export { getGalleries, createGallery, deleteGallery };
