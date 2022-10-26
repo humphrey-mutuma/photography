@@ -3,12 +3,12 @@ import { Schema, model } from "mongoose";
 // create a gallery schema
 const gallerySchema = new Schema(
   {
-    user: {
+    owner: {
       type: Schema.Types.ObjectId,
       required: true,
       ref: "User",
     },
-    name: {
+    description: {
       type: String,
       required: [true, "Please add a name"],
     },
