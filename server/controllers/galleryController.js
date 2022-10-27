@@ -32,6 +32,7 @@ const createGallery = asyncHandler(async (req, res) => {
     throw new Error("User has an existing  gallery");
   }
 
+  // create a gallery
   const createGallery = await Gallery.create({
     owner: req.user.id,
     description,
@@ -54,6 +55,44 @@ const createGallery = asyncHandler(async (req, res) => {
       res.status(400);
       throw new Error("Gallery Not created or user gallery not updated");
     }
+  }
+});
+
+// @desc update a gallery
+// @route POST /api/gallery/:id
+// @access private
+const updateGallery = asyncHandler(async (req, res) => {
+  const { description, photos } = req.body;
+  if (!description) {
+    res.status(400);
+    throw new Error("Please add a description and photos");
+  }
+  // fetch the gallery to be updated
+  const gallery = await Gallery.findById(req.params.id);
+  if (!gallery) {
+    res.status(400);
+    throw new Error("Gallery Not Found");
+  }
+  // verify owner (this is the signed in user)
+  const owner = await User.findById(req.user.id); //get user.id from protect middleware
+  if (!owner) {
+    res.status(400);
+    throw new Error("User not found");
+  }
+  // check to confirm the signed in user is the owner
+  if (gallery.owner.toString() !== owner.id.toString()) {
+    res.status(401);
+    throw new Error("User not authorized");
+  }
+
+  // update the gallery photos
+  const updatedGallery = await Gallery.findOneAndUpdate(
+    { owner: req.user.id },
+    { description: description, $push: { photos: photos } },
+    { upsert: true, new: true, runValidators: true }
+  );
+  if (updatedGallery) {
+    res.status(201).json(updatedGallery);
   }
 });
 
@@ -85,4 +124,4 @@ const deleteGallery = asyncHandler(async (req, res) => {
   res.status(200).json({ msg: "Gallery deleted" });
 });
 
-export { gallery, createGallery, deleteGallery };
+export { gallery, createGallery, updateGallery, deleteGallery };
