@@ -49,28 +49,27 @@ const createGallery = asyncHandler(async (req, res) => {
 // @route DELETE /api/gallery/:id
 // @access private
 const deleteGallery = asyncHandler(async (req, res) => {
-  const { id } = req.params;
-  const { galleryOwner, userId } = req.body;
-
-  if (!userId || !galleryOwner) {
+  // fetch the gallery to be deleted
+  const gallery = await Gallery.findById(req.params.id);
+  if (!gallery) {
     res.status(400);
-    throw new Error("Invalid infomation");
+    throw new Error("Gallery Not Found");
   }
-  // verify owner
-  // const owner = await User.findById(galleryOwner);
-  // if (!owner) {
-  //   res.status(400);
-  //   throw new Error("User not found");
-  // }
-
-  // check to confirm the signed in user is the owner
-  // pass sined in user id and gallery owner id
-  if (userId !== galleryOwner) {
+ 
+  // verify owner (this is the signed in user)
+  const owner = await User.findById(req.user.id); //get user.id from protect middleware
+  if (!owner) {
+    res.status(400);
+    throw new Error("User not found");
+  }
+   // check to confirm the signed in user is the owner
+  if (gallery.owner.toString() !== owner.id.toString()) {
     res.status(401);
     throw new Error("User not authorized");
   }
 
-  await Gallery.deleteOne({ _id: id });
+  await Gallery.deleteOne({ _id: gallery._id });
+  await User.findOneAndUpdate({ _id: req.user.id }, { gallery: null });
   res.status(200).json({ msg: "Gallery deleted" });
 });
 
