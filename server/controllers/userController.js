@@ -70,7 +70,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
 // @desc get a user data
 // @route GET /api/users/:id
-// @access Public
+// @access Private
 const getUser = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const user = await User.findById(id); //find user by email
