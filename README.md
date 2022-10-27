@@ -77,7 +77,7 @@ JWT_SECRET= // a jsonwebtoken secret
 ```terminal
 // in the root level
 $ cd photography  //the root folder
-$ echo "JWT_SECRET=YOUR_JWT_SECRET" >> src/.env
+$ echo "JWT_SECRET=YOUR_JWT_SECRET" >> .env
 ```
 
 ### Start

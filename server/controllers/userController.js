@@ -36,6 +36,7 @@ const registerUser = asyncHandler(async (req, res) => {
       name: newUser.name,
       email: newUser.email,
       bio: newUser.bio,
+      token: generateToken(newUser._id),
     });
   } else {
     res.status(400);
@@ -59,6 +60,7 @@ const loginUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       bio: user.bio,
+      token: generateToken(user._id),
     });
   } else {
     res.status(400);
@@ -79,6 +81,18 @@ const getUser = asyncHandler(async (req, res) => {
   res.status(200).json(user);
 });
 
+// @desc get all users in the database
+// @route GET /api/users
+// @access Public
+const getUsers = asyncHandler(async (req, res) => {
+  const users = await User.find(); //find user by email
+  if (!users) {
+    res.status(400);
+    throw new Error("Not users in the database");
+  }
+  res.status(200).json(users);
+});
+
 // @desc  delete a user
 // @route DELETE  /api/users:id
 // @access private
@@ -94,4 +108,11 @@ const deleteUser = asyncHandler(async (req, res) => {
   });
 });
 
-export { registerUser, loginUser, getUser, deleteUser };
+// Generate JWt
+
+const generateToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: "30d",
+  });
+};
+export { registerUser, loginUser, getUser, getUsers, deleteUser };
