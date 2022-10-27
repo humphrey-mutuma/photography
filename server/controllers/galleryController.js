@@ -17,7 +17,19 @@ const createGallery = asyncHandler(async (req, res) => {
   const { description, photos } = req.body;
   if (!description) {
     res.status(400);
-    throw new Error("Please add a user, description and photos");
+    throw new Error("Please add a description and photos");
+  }
+  // get user from req.user.id (middleware)
+  // check if user has an existing gallery
+  const owner = await User.findById(req.user.id); //get user.id from protect middleware
+  if (!owner) {
+    res.status(400);
+    throw new Error("User not found");
+  }
+
+  if (owner.gallery !== "") {
+    res.status(400);
+    throw new Error("User has an existing  gallery");
   }
 
   const createGallery = await Gallery.create({
@@ -55,21 +67,21 @@ const deleteGallery = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("Gallery Not Found");
   }
- 
+
   // verify owner (this is the signed in user)
   const owner = await User.findById(req.user.id); //get user.id from protect middleware
   if (!owner) {
     res.status(400);
     throw new Error("User not found");
   }
-   // check to confirm the signed in user is the owner
+  // check to confirm the signed in user is the owner
   if (gallery.owner.toString() !== owner.id.toString()) {
     res.status(401);
     throw new Error("User not authorized");
   }
 
   await Gallery.deleteOne({ _id: gallery._id });
-  await User.findOneAndUpdate({ _id: req.user.id }, { gallery: null });
+  await User.findOneAndUpdate({ _id: req.user.id }, { gallery: "" });
   res.status(200).json({ msg: "Gallery deleted" });
 });
 
