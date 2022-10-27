@@ -1,3 +1,15 @@
+
+
+# About
+
+A photography portfolio to show case your porfolio and some photography work!
+
+## Built with
+
+- Tailwindcss
+- React
+- Mobile first design
+
 # Getting Started with MERN stack
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
