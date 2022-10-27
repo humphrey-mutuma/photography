@@ -2,26 +2,26 @@ import asyncHandler from "express-async-handler";
 import Gallery from "../models/galleryModel.js";
 import User from "../models/userModel.js";
 
-// @desc get galleries
-// @route GET /api/galleries
-// @access Public
-const getGalleries = asyncHandler(async (req, res) => {
-  const galleries = await Gallery.find();
-  res.status(200).json(galleries);
+// @desc get gallery
+// @route GET /api/gallery
+// @access Private
+const gallery = asyncHandler(async (req, res) => {
+  const userGallery = await Gallery.find({ owner: req.user.id });
+  res.status(200).json(userGallery);
 });
 
 // @desc create gallery
 // @route POST /api/gallery
 // @access private
 const createGallery = asyncHandler(async (req, res) => {
-  const { owner, description, photos } = req.body;
-  if (!owner || !description) {
+  const { description, photos } = req.body;
+  if (!description) {
     res.status(400);
     throw new Error("Please add a user, description and photos");
   }
 
   const createGallery = await Gallery.create({
-    owner,
+    owner: req.user.id,
     description,
     photos,
   });
@@ -74,4 +74,4 @@ const deleteGallery = asyncHandler(async (req, res) => {
   res.status(200).json({ msg: "Gallery deleted" });
 });
 
-export { getGalleries, createGallery, deleteGallery };
+export { gallery, createGallery, deleteGallery };

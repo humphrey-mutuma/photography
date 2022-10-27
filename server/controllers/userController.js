@@ -72,12 +72,9 @@ const loginUser = asyncHandler(async (req, res) => {
 // @route GET /api/users/:id
 // @access Private
 const getUser = asyncHandler(async (req, res) => {
-  const { id } = req.params;
-  const user = await User.findById(id); //find user by email
-  if (!user) {
-    res.status(400);
-    throw new Error("User Not Found");
-  }
+  // get user id from the protect middleware
+  const user = await User.findById(req.user.id); 
+   
   res.status(200).json(user);
 });
 
