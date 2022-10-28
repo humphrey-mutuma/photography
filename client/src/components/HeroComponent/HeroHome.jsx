@@ -108,6 +108,7 @@ function HeroHome() {
                 Capture every minute.
               </span>
             </h1>
+            <br />
             <div className="max-w-3xl mx-auto">
               <p
                 className="text-xl text-gray-400 mb-8"
@@ -115,7 +116,7 @@ function HeroHome() {
                 data-aos-delay="150"
               >
                 I'm not a photographer, but i host photographers and I can
-                picture us together.😎
+                picture us together 🥰
               </p>
               <div
                 className="max-w-xs mx-auto sm:max-w-none sm:flex sm:justify-center"
