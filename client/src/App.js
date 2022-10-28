@@ -7,6 +7,7 @@ import { ToastContainer } from "react-toastify";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import ResetPassword from "./pages/ResetPassword";
+import CreateGallery from "./pages/create-gallery";
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/:userId" element={<Gallery />} />
         <Route path="/signin" element={<SignIn />} />
+        <Route path="/create-gallery" element={<CreateGallery />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route
