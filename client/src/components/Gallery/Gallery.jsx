@@ -24,12 +24,12 @@ const Gallery = () => {
   }, [count]);
 
   return (
-    <article className="col-span-2 min-h-screen scrollbar-hide">
+    <article className="col-span-2 min-h-screen ">
       <Images imagesToShow={imageStorage} />
       <section className="flex flex-col items-center w-full">
         <button
           onClick={showMore}
-          className="my-5 shadow font-mainfont bg-transparent hover:text-white hover:bg-blue-400 smooth-transition focus:shadow-outline focus:outline-none text-black py-4 px-4 rounded text-lg uppercase w-12/12 md:w-6/12 smooth-transition"
+          className="my-5 shadow border text-white font-mainfont bg-transparent hover:text-white hover:bg-blue-400 smooth-transition focus:shadow-outline focus:outline-none  py-4 px-4 rounded text-lg uppercase w-12/12 md:w-6/12 smooth-transition"
         >
           Load More
         </button>
