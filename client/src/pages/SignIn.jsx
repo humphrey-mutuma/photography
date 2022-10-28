@@ -1,13 +1,38 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import NavBar from "../components/NavBar";
+import { useForm } from "react-hook-form";
+import axios from "axios";
+import {
+  ToastifyFailure,
+  ToastifySuccess,
+} from "../components/Toastify/Toastify";
 
 function SignIn() {
+  const { register, reset, handleSubmit } = useForm();
+
+  // signup user
+  const onSubmit = ({ email, password }) => {
+    axios
+      .post(`${process.env.REACT_APP_SERVER_ROOT_URL}/api/users/login`, {
+        email,
+        password,
+      })
+      .then(function (res) {
+        reset();
+        ToastifySuccess("Successfully Logged In");
+        console.log("new user", res);
+      })
+      .catch(function (error) {
+        // console.log(error);
+        ToastifyFailure("Invalid Credentials");
+      });
+  };
+
   return (
     <div className="flex flex-col min-h-screen overflow-hidden bg-black">
       {/*  Site header */}
       <NavBar />
-
       {/*  Page content */}
       <main className="flex-grow">
         <section className=" ">
@@ -16,13 +41,13 @@ function SignIn() {
               {/* Page header */}
               <div className="max-w-3xl mx-auto text-center pb-6 md:pb-10">
                 <h1 className="h1 text-white">
-                  Welcome back, make your photograhy dream a reality today.
+                  Welcome back, make your photography dream a reality today.
                 </h1>
               </div>
 
               {/* Form */}
               <div className="max-w-sm mx-auto">
-                <form>
+                <form onSubmit={handleSubmit(onSubmit)}>
                   <div className="flex flex-wrap -mx-3 mb-4">
                     <div className="w-full px-3">
                       <label
@@ -34,7 +59,10 @@ function SignIn() {
                       <input
                         id="email"
                         type="email"
-                        className="form-input w-full text-gray-100"
+                        {...register("email", {
+                          required: true,
+                        })}
+                        className="form-input w-full text-black"
                         placeholder="Enter your email address"
                         required
                       />
@@ -53,7 +81,10 @@ function SignIn() {
                       <input
                         id="password"
                         type="password"
-                        className="form-input w-full text-gray-100"
+                        {...register("password", {
+                          required: true,
+                        })}
+                        className="form-input w-full text-black"
                         placeholder="Enter your password"
                         required
                       />
@@ -65,23 +96,25 @@ function SignIn() {
                         <label className="flex items-center">
                           <input type="checkbox" className="form-checkbox" />
                           <span className="text-gray-300 ml-2">
-                            Keep me signed in
+                            Keep me logged in
                           </span>
                         </label>{" "}
                         <Link
                           to="/reset-password"
                           className="text-sm font-medium text-blue-600 hover:underline"
                         >
-                          Having trouble signing in?
+                          Having trouble logging in?
                         </Link>
                       </div>
                     </div>
                   </div>
                   <div className="flex flex-wrap -mx-3 mt-6">
                     <div className="w-full px-3">
-                      <button className="btn text-white bg-blue-600 hover:bg-blue-700 w-full">
-                        Sign in
-                      </button>
+                      <input
+                        type="submit"
+                        value="Log In"
+                        className="btn text-white bg-blue-600 hover:bg-blue-700 w-full"
+                      />
                     </div>
                   </div>
                 </form>

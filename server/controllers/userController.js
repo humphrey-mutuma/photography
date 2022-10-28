@@ -54,6 +54,7 @@ const loginUser = asyncHandler(async (req, res) => {
     throw new Error("Please add email and password");
   }
   const user = await User.findOne({ email: email }); //find user by email
+
   if (user && (await bcrypt.compare(password, user.password))) {
     res.status(200).json({
       _id: user._id,

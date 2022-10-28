@@ -68,7 +68,7 @@ export default function NavBar() {
                 to="/signin"
                 className="btn-sm font-medium text-black bg-white  hover:text-gray-900 px-5 py-3 flex items-center transition  ease-in-out transform hover:scale-125 duration-300"
               >
-                Sign in
+                Log in
               </Link>
             </li>
           </ul>
