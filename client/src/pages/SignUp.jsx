@@ -26,7 +26,7 @@ function SignUp() {
       })
       .catch(function (error) {
         // console.log(error);
-        if (error.response.data.msg) {
+        if (error.response.data.msg === 'login') {
           ToastifyFailure("You are registered, Kindly LOGIN");
         } else {
           ToastifyFailure("Something Went Wrong, Try again");
