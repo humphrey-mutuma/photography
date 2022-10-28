@@ -15,7 +15,7 @@ const registerUser = asyncHandler(async (req, res) => {
   // check if user is already registred
   const userExists = await User.findOne({ email: email });
   if (userExists) {
-    res.status(400);
+    res.status(400).json({ msg: "login" });
     throw new Error("User already exists, Login");
   }
 
@@ -73,8 +73,8 @@ const loginUser = asyncHandler(async (req, res) => {
 // @access Private
 const getUser = asyncHandler(async (req, res) => {
   // get user id from the protect middleware
-  const user = await User.findById(req.user.id); 
-   
+  const user = await User.findById(req.user.id);
+
   res.status(200).json(user);
 });
 

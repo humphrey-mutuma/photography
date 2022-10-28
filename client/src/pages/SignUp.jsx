@@ -1,14 +1,43 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import NavBar from '../components/NavBar';
+import React from "react";
+import { Link } from "react-router-dom";
+import NavBar from "../components/NavBar";
+import { useForm } from "react-hook-form";
+import axios from "axios";
+import {
+  ToastifyFailure,
+  ToastifySuccess,
+} from "../components/Toastify/Toastify";
 
-  
 function SignUp() {
+  const { register, reset, handleSubmit } = useForm();
+
+  // signup user
+  const onSubmit = ({ name, email, password }) => {
+    axios
+      .post(`${process.env.REACT_APP_SERVER_ROOT_URL}/api/users`, {
+        name,
+        email,
+        password,
+      })
+      .then(function (res) {
+        reset();
+        ToastifySuccess("Successfully Registered");
+        // console.log("new user", res);
+      })
+      .catch(function (error) {
+        // console.log(error);
+        if (error.response.data.msg) {
+          ToastifyFailure("You are registered, Kindly LOGIN");
+        } else {
+          ToastifyFailure("Something Went Wrong, Try again");
+        }
+      });
+  };
+
   return (
     <div className="flex flex-col min-h-screen overflow-hidden bg-black">
       {/*  Site header */}
       <NavBar />
-
       {/*  Page content */}
       <main className="flex-grow">
         <section className="">
@@ -23,7 +52,7 @@ function SignUp() {
 
               {/* Form */}
               <div className="max-w-sm mx-auto">
-                <form>
+                <form onSubmit={handleSubmit(onSubmit)}>
                   <div className="flex flex-wrap -mx-3 mb-4">
                     <div className="w-full px-3">
                       <label
@@ -34,8 +63,11 @@ function SignUp() {
                       </label>
                       <input
                         id="name"
+                        {...register("name", {
+                          required: true,
+                        })}
                         type="text"
-                        className="form-input w-full text-gray-100"
+                        className="form-input w-full text-black"
                         placeholder="Enter your name"
                         required
                       />
@@ -51,8 +83,11 @@ function SignUp() {
                       </label>
                       <input
                         id="email"
+                        {...register("email", {
+                          required: true,
+                        })}
                         type="email"
-                        className="form-input w-full text-gray-100"
+                        className="form-input w-full text-black"
                         placeholder="Enter your email address"
                         required
                       />
@@ -69,7 +104,10 @@ function SignUp() {
                       <input
                         id="password"
                         type="password"
-                        className="form-input w-full text-gray-100"
+                        {...register("password", {
+                          required: true,
+                        })}
+                        className="form-input w-full text-black"
                         placeholder="Enter your password"
                         required
                       />
@@ -77,9 +115,11 @@ function SignUp() {
                   </div>
                   <div className="flex flex-wrap -mx-3 mt-6">
                     <div className="w-full px-3">
-                      <button className="btn text-white bg-blue-600 hover:bg-blue-700 w-full">
-                        Sign up
-                      </button>
+                      <input
+                        value="Sign up"
+                        type="submit"
+                        className="btn text-white text-center cursor-pointer bg-blue-600 hover:bg-blue-700 w-full"
+                      />
                     </div>
                   </div>
                   <div className="text-sm text-gray-400 text-center mt-3">
