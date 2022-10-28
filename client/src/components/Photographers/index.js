@@ -1,4 +1,3 @@
-import { Icon } from "@iconify/react";
 import { Link } from "react-router-dom";
 import Socials from "../sideMenu/Socials";
 const photographers = [
@@ -86,13 +85,13 @@ export default function Photographers() {
       <section
         role="list"
         aria-label="Photographers "
-        class="lg:flex md:flex sm:flex px-6 items-center xl:justify-between flex-wrap md:justify-around sm:justify-around lg:justify-around"
+        class="flex flex-col sm:flex-row w-full  px-6 items-center xl:justify-between flex-wrap md:justify-around sm:justify-around lg:justify-around"
       >
         {photographers.map((photographer) => (
           <Link
             to={photographer._id}
             key={photographer.name}
-            class="xl:w-1/3 cursor-pointer sm:w-3/4 md:w-2/5 relative mt-16 mb-32 sm:mb-24 xl:max-w-sm lg:w-2/5"
+            class=" cursor-pointer w-full  sm:w-1/2 md:w-1/3 relative mt-16  mb-14  sm:mb-24 xl:max-w-sm lg:w-1/4"
           >
             <section role="listitem">
               <div class="rounded overflow-hidden shadow-md ">
@@ -102,7 +101,7 @@ export default function Photographers() {
                       src={photographer.image}
                       alt={photographer.name}
                       role="img"
-                      class="rounded-full object-cover h-full w-full shadow-md"
+                      class="rounded-full object-cover h-full w-full shadow-sm"
                     />
                   </div>
                 </div>
@@ -114,7 +113,7 @@ export default function Photographers() {
                     {photographer.category}
                   </p>
 
-                  <Socials/>
+                  <Socials />
                 </div>
               </div>
             </section>
