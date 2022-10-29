@@ -7,10 +7,10 @@ import bcrypt from "bcryptjs";
 // @route POST /api/users
 // @access Public
 const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, password, bio } = req.body;
-  if (!name || !email || !password) {
+  const { name, email, password, description, socialMedia } = req.body;
+  if (!name || !email || !password || description) {
     res.status(400);
-    throw new Error("Please add name, email and password");
+    throw new Error("Please add name, email, password, and description");
   }
   // check if user is already registred
   const userExists = await User.findOne({ email: email });
@@ -28,14 +28,17 @@ const registerUser = asyncHandler(async (req, res) => {
     name,
     email,
     password: hashedPassword,
-    bio,
+    description,
+    socialMedia,
   });
   if (newUser) {
     res.status(201).json({
-      _id: newUser._id,
+      id: newUser._id,
       name: newUser.name,
       email: newUser.email,
-      bio: newUser.bio,
+      description: newUser.description,
+      socialMedia: newUser.socialMedia,
+      gallery: newUser.gallery,
       token: generateToken(newUser._id),
     });
   } else {
@@ -57,10 +60,12 @@ const loginUser = asyncHandler(async (req, res) => {
 
   if (user && (await bcrypt.compare(password, user.password))) {
     res.status(200).json({
-      _id: user._id,
+      id: user._id,
       name: user.name,
       email: user.email,
-      bio: user.bio,
+      description: user.description,
+      socialMedia: user.socialMedia,
+      gallery: user.gallery,
       token: generateToken(user._id),
     });
   } else {

@@ -26,6 +26,11 @@ function SignUp() {
         name,
         email,
         password,
+        description,
+        
+        facebook,
+        twitter,
+        instagram,
       })
       .then(function (res) {
         reset();

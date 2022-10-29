@@ -8,10 +8,6 @@ const gallerySchema = new Schema(
       required: true,
       ref: "User",
     },
-    description: {
-      type: String,
-      required: [true, "Please add a name"],
-    },
     photos: {
       type: Array,
     },

@@ -16,8 +16,12 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Please add  password"],
     },
-    bio: {
+    description: {
       type: String,
+      required: [true, "Please add  bio"],
+    },
+    socialMedia: {
+      type: Array,
       // required: [true, "Please add  bio"],
     },
     gallery: {
