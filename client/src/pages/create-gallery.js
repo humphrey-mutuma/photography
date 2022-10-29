@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import NavBar from "../components/NavBar";
 import { useForm } from "react-hook-form";
@@ -7,10 +7,41 @@ import {
   ToastifyFailure,
   ToastifySuccess,
 } from "../components/Toastify/Toastify";
+import { v4 as uuidv4 } from "uuid";
+import { initializeApp } from "firebase/app";
+import { firebaseConfig } from "../lib/firebase";
+import {
+  getStorage,
+  ref as imageReference,
+  uploadBytes,
+  getDownloadURL,
+} from "firebase/storage";
 
 function CreateGallery() {
   const { register, reset, handleSubmit } = useForm();
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
+  const [imageUpload, setImageUpload] = useState(null);
+  const [imageUrl, setImageUrl] = useState("");
+  const storage = getStorage(initializeApp(firebaseConfig));
+  const [uploading, setUploading] = useState(false);
+
+  // upload image to firebase storage
+  const uploadFile = () => {
+    if (imageUpload == null) return;
+    const imageRef = imageReference(
+      storage,
+      `${""}/${imageUpload.name + uuidv4()}`
+    );
+    // eslint-disable-next-line no-unused-expressions, no-sequences
+    setUploading(true),
+      uploadBytes(imageRef, imageUpload).then((snapshot) => {
+        getDownloadURL(snapshot.ref).then((url) => {
+          ToastifySuccess("Successfully Uploaded Image");
+          // eslint-disable-next-line no-unused-expressions, no-sequences
+          setUploading(false), setImageUpload(null), setImageUrl(url);
+        });
+      });
+  };
 
   // signup user
   const onSubmit = ({ email, password }) => {
@@ -72,72 +103,7 @@ function CreateGallery() {
                       />
                     </div>
                   </div>
-                  {/* social media handles */}
-                  <section className="flex ite items-center justify-between space-x-4">
-                    <aside className="flex flex-wrap -mx-3 mb-4">
-                      <div className="w-full px-3">
-                        <div className="flex justify-between">
-                          <label
-                            className="block text-gray-100 text-sm font-medium mb-1"
-                            htmlFor="facebook"
-                          >
-                            Facebook username
-                          </label>
-                        </div>
-                        <input
-                          id="facebook"
-                          type="facebook"
-                          {...register("facebook", {
-                            required: false,
-                          })}
-                          className="form-input w-full text-black"
-                          placeholder="Enter your facebook Username"
-                        />
-                      </div>
-                    </aside>
-                    <aside className="flex flex-wrap -mx-3 mb-4">
-                      <div className="w-full px-3">
-                        <div className="flex justify-between">
-                          <label
-                            className="block text-gray-100 text-sm font-medium mb-1"
-                            htmlFor="twitter"
-                          >
-                            Twitter Username
-                          </label>
-                        </div>
-                        <input
-                          id="twitter"
-                          type="twitter"
-                          {...register("twitter", {
-                            required: false,
-                          })}
-                          className="form-input w-full text-black"
-                          placeholder="Enter your twitter username"
-                        />
-                      </div>
-                    </aside>
-                    <aside className="flex flex-wrap -mx-3 mb-4">
-                      <div className="w-full px-3">
-                        <div className="flex justify-between">
-                          <label
-                            className="block text-gray-100 text-sm font-medium mb-1"
-                            htmlFor="instagram"
-                          >
-                            Instagram Username
-                          </label>
-                        </div>
-                        <input
-                          id="instagram"
-                          type="instagram"
-                          {...register("instagram", {
-                            required: false,
-                          })}
-                          className="form-input w-full text-black"
-                          placeholder="Enter your instagram username"
-                        />
-                      </div>
-                    </aside>
-                  </section>
+                
                   {/* dropzone */}
                   <section className="container bg-white   rounded-md border-2 border-dashed border-blue-500">
                     <div
@@ -156,6 +122,21 @@ function CreateGallery() {
                       <h4>Files</h4>
                       <ul>{files}</ul>
                     </aside>
+
+                    <label className="block cursor-pointer  p-6">
+                      <span className="sr-only">Choose profile photo</span>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(event) => {
+                          setImageUpload(event.target.files[0]);
+                        }}
+                        className="block cursor-pointer w-full text-slate-800 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:font-semibold file:bg-violet-200 file:text-blue-700 hover:file:bg-violet-100    "
+                      />
+                      <button className="btn-sm " onClick={uploadFile}>
+                        {uploading ? "Uploading ..." : "Upload Image"}
+                      </button>
+                    </label>
                   </section>
 
                   <footer className="flex flex-wrap -mx-3 mt-6">

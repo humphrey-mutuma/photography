@@ -12,7 +12,15 @@ function SignUp() {
   const { register, reset, handleSubmit } = useForm();
 
   // signup user
-  const onSubmit = ({ name, email, password }) => {
+  const onSubmit = ({
+    name,
+    email,
+    password,
+    description,
+    facebook,
+    twitter,
+    instagram,
+  }) => {
     axios
       .post(`${process.env.REACT_APP_SERVER_ROOT_URL}/api/users`, {
         name,
@@ -26,7 +34,7 @@ function SignUp() {
       })
       .catch(function (error) {
         // console.log(error);
-        if (error.response.data.msg === 'login') {
+        if (error.response.data.msg === "login") {
           ToastifyFailure("You are registered, Kindly LOGIN");
         } else {
           ToastifyFailure("Something Went Wrong, Try again");
@@ -51,10 +59,10 @@ function SignUp() {
               </div>
 
               {/* Form */}
-              <div className="max-w-sm mx-auto">
+              <div className="max-w-2xl mx-auto">
                 <form onSubmit={handleSubmit(onSubmit)}>
-                  <div className="flex flex-wrap -mx-3 mb-4">
-                    <div className="w-full px-3">
+                  <section className="flex mb-4 flex-col sm:flex-row items-center justify-between sm:space-x-2 ">
+                    <div className="w-full mb-4 sm:mb-0">
                       <label
                         className="block text-gray-100 text-sm font-medium mb-1"
                         htmlFor="name"
@@ -72,9 +80,7 @@ function SignUp() {
                         required
                       />
                     </div>
-                  </div>
-                  <div className="flex flex-wrap -mx-3 mb-4">
-                    <div className="w-full px-3">
+                    <div className="w-full mb-4 sm:mb-0">
                       <label
                         className="block text-gray-100 text-sm font-medium mb-1"
                         htmlFor="email"
@@ -92,9 +98,9 @@ function SignUp() {
                         required
                       />
                     </div>
-                  </div>
-                  <div className="flex flex-wrap -mx-3 mb-4">
-                    <div className="w-full px-3">
+                  </section>
+                  <section className="flex mb-4 flex-col sm:flex-row items-center justify-between sm:space-x-2 ">
+                    <div className="w-full mb-4 sm:mb-0">
                       <label
                         className="block text-gray-100 text-sm font-medium mb-1"
                         htmlFor="password"
@@ -112,9 +118,95 @@ function SignUp() {
                         required
                       />
                     </div>
-                  </div>
+                    <div className="w-full mb-4 sm:mb-0">
+                      <label
+                        className="block text-gray-100 text-sm font-medium mb-1"
+                        htmlFor="description"
+                      >
+                        Short Description{" "}
+                        <span className="text-red-600">*</span>
+                      </label>
+                      <input
+                        id="description"
+                        type="description"
+                        {...register("description", {
+                          required: true,
+                        })}
+                        className="form-input w-full text-black"
+                        placeholder="e.g Nature and street photographer"
+                        required
+                      />
+                    </div>
+                  </section>
+
+                  {/* social media handles */}
+                  <section className="flex mb-4 flex-col sm:flex-row items-center justify-between sm:space-x-2 ">
+                    <aside>
+                      <div className="w-full mb-4 sm:mb-0">
+                        <div className="flex justify-between">
+                          <label
+                            className="block text-gray-100 text-sm font-medium mb-1"
+                            htmlFor="facebook"
+                          >
+                            Facebook username
+                          </label>
+                        </div>
+                        <input
+                          id="facebook"
+                          type="facebook"
+                          {...register("facebook", {
+                            required: false,
+                          })}
+                          className="form-input w-full text-black"
+                          placeholder="Enter your facebook Username"
+                        />
+                      </div>
+                    </aside>
+                    <aside>
+                      <div className="w-full mb-4 sm:mb-0">
+                        <div className="flex justify-between">
+                          <label
+                            className="block text-gray-100 text-sm font-medium mb-1"
+                            htmlFor="twitter"
+                          >
+                            Twitter Username
+                          </label>
+                        </div>
+                        <input
+                          id="twitter"
+                          type="twitter"
+                          {...register("twitter", {
+                            required: false,
+                          })}
+                          className="form-input w-full text-black"
+                          placeholder="Enter your twitter username"
+                        />
+                      </div>
+                    </aside>
+                    <aside>
+                      <div className="w-full ">
+                        <div className="flex justify-between">
+                          <label
+                            className="block text-gray-100 text-sm font-medium mb-1"
+                            htmlFor="instagram"
+                          >
+                            Instagram Username
+                          </label>
+                        </div>
+                        <input
+                          id="instagram"
+                          type="instagram"
+                          {...register("instagram", {
+                            required: false,
+                          })}
+                          className="form-input w-full text-black"
+                          placeholder="Enter your instagram username"
+                        />
+                      </div>
+                    </aside>
+                  </section>
                   <div className="flex flex-wrap -mx-3 mt-6">
-                    <div className="w-full px-3">
+                    <div className="w-full ">
                       <input
                         value="Sign up"
                         type="submit"
