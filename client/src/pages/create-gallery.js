@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import NavBar from "../components/NavBar";
-import { useForm } from "react-hook-form";
 import axios from "axios";
 import {
   ToastifyFailure,
@@ -18,7 +17,6 @@ import {
 } from "firebase/storage";
 
 function CreateGallery() {
-  const { register, reset, handleSubmit } = useForm();
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
   const [imageUpload, setImageUpload] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
@@ -36,12 +34,14 @@ function CreateGallery() {
     setUploading(true),
       uploadBytes(imageRef, imageUpload).then((snapshot) => {
         getDownloadURL(snapshot.ref).then((url) => {
-          ToastifySuccess("Successfully Uploaded Image");
+          ToastifySuccess("Successfully Uploaded Images");
           // eslint-disable-next-line no-unused-expressions, no-sequences
           setUploading(false), setImageUpload(null), setImageUrl(url);
         });
       });
   };
+
+  console.log("Imagexx", imageUrl);
 
   // signup user
   const onSubmit = ({ email, password }) => {
@@ -51,7 +51,6 @@ function CreateGallery() {
         password,
       })
       .then(function (res) {
-        reset();
         ToastifySuccess("Successfully Logged In");
         console.log("new user", res);
       })
@@ -82,7 +81,7 @@ function CreateGallery() {
 
               {/* Form */}
               <div className="  mx-auto">
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <main>
                   {/* dropzone */}
                   <section className="container bg-white   rounded-md border-2 border-dashed border-blue-500">
                     <div
@@ -113,21 +112,22 @@ function CreateGallery() {
                       }}
                       className="block cursor-pointer w-full text-slate-100 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:font-semibold file:bg-violet-200 file:text-blue-700 hover:file:bg-violet-100    "
                     />
-                  <button className="btn-sm bg-blue-500 inline-flex whitespace-nowrap" onClick={uploadFile}>
-                    {uploading ? "Uploading ..." : "Upload Image"}
-                  </button>
+                    <button
+                      className="btn-sm bg-blue-500 inline-flex whitespace-nowrap"
+                      onClick={uploadFile}
+                    >
+                      {uploading ? "Uploading ..." : "Upload Image"}
+                    </button>
                   </label>
 
                   <footer className="flex flex-wrap -mx-3 mt-6">
                     <div className="w-full px-3 flex items-center justify-end">
-                      <input
-                        type="submit"
-                        value="upload"
-                        className="btn max-w-sm text-white bg-blue-600 hover:bg-blue-700 w-full"
-                      />
+                      <button className="btn max-w-sm text-white bg-blue-600 hover:bg-blue-700 w-full">
+                        upload
+                      </button>
                     </div>
                   </footer>
-                </form>
+                </main>
               </div>
             </div>
           </div>
