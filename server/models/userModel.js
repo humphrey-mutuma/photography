@@ -25,8 +25,7 @@ const userSchema = new Schema(
       // required: [true, "Please add  bio"],
     },
     gallery: {
-      type: Schema.Types.ObjectId,
-      ref: "Gallery",
+      type: Array,
     },
   },
   {

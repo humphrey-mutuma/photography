@@ -11,8 +11,7 @@ import dbConnect from "./config/dbConnect.js";
 import errorHandler from "./middleware/errorMiddleware.js";
 // import router
 import usersRoute from "./routes/userRoute.js";
-import galleryRoute from "./routes/galleryRoute.js";
-
+ 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -28,8 +27,7 @@ app.use(cookieParser());
 
 // routes
 app.use("/api/users", usersRoute);
-app.use("/api/gallery", galleryRoute);
-
+ 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));

@@ -74,13 +74,51 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc update user
+// @route PATCH /api/users/:id
+// @access private
+const updateUser = asyncHandler(async (req, res) => {
+  const { photos } = req.body;
+  if (photos.length === 0) {
+    res.status(400);
+    throw new Error("Please add a description and photos");
+  }
+
+  // verify owner (this is the signed in user)
+  const owner = await User.findById(req.user.id); //get user.id from protect middleware
+  if (!owner) {
+    res.status(400);
+    throw new Error("User not found");
+  }
+
+  // update the user gallery
+  const updateUserPhotos = await User.findOneAndUpdate(
+    { _id: req.user.id },
+    { $push: { gallery: photos } },
+    { upsert: true, new: true, runValidators: true }
+  );
+  if (updateUserPhotos) {
+    res.status(201).json({
+      id: updateUserPhotos._id,
+      name: updateUserPhotos.name,
+      email: updateUserPhotos.email,
+      description: updateUserPhotos.description,
+      socialMedia: updateUserPhotos.socialMedia,
+      gallery: updateUserPhotos.gallery,
+      token: generateToken(updateUserPhotos._id),
+    });
+  } else {
+    res.status(500);
+    throw new Error("Something went wrong! photos not Uploaded");
+  }
+});
+
 // @desc get a user data
 // @route GET /api/users/:id
 // @access Private
 const getUser = asyncHandler(async (req, res) => {
   // get user id from the protect middleware
   const user = await User.findById(req.user.id);
-
   res.status(200).json(user);
 });
 
@@ -97,18 +135,15 @@ const getUsers = asyncHandler(async (req, res) => {
 });
 
 // @desc  delete a user
-// @route DELETE  /api/users:id
+// @route DELETE  /api/users/:id
 // @access private
 const deleteUser = asyncHandler(async (req, res) => {
-  const { id } = req.params;
-  const user = await User.deleteOne({ _id: id });
-  if (!user) {
-    res.status(400);
-    throw new Error("User Not Found");
+  const user = await User.deleteOne({ _id: req.user.id });
+  if (user) {
+    res.status(200).json({
+      success: true,
+    });
   }
-  res.status(200).json({
-    success: true,
-  });
 });
 
 // Generate JWt
@@ -118,4 +153,5 @@ const generateToken = (id) => {
     expiresIn: "30d",
   });
 };
-export { registerUser, loginUser, getUser, getUsers, deleteUser };
+
+export { registerUser, updateUser, loginUser, getUser, getUsers, deleteUser };
