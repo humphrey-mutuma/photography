@@ -83,27 +83,6 @@ function CreateGallery() {
               {/* Form */}
               <div className="  mx-auto">
                 <form onSubmit={handleSubmit(onSubmit)}>
-                  <div className="flex flex-wrap -mx-3 mb-4">
-                    <div className="w-full px-3">
-                      <label
-                        className="block text-gray-100 text-sm font-medium mb-1"
-                        htmlFor="description"
-                      >
-                        Description
-                      </label>
-                      <input
-                        id="description"
-                        type="description"
-                        {...register("description", {
-                          required: true,
-                        })}
-                        className="form-input w-full text-black"
-                        placeholder="Street and nature photographer"
-                        required
-                      />
-                    </div>
-                  </div>
-                
                   {/* dropzone */}
                   <section className="container bg-white   rounded-md border-2 border-dashed border-blue-500">
                     <div
@@ -122,28 +101,28 @@ function CreateGallery() {
                       <h4>Files</h4>
                       <ul>{files}</ul>
                     </aside>
-
-                    <label className="block cursor-pointer  p-6">
-                      <span className="sr-only">Choose profile photo</span>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={(event) => {
-                          setImageUpload(event.target.files[0]);
-                        }}
-                        className="block cursor-pointer w-full text-slate-800 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:font-semibold file:bg-violet-200 file:text-blue-700 hover:file:bg-violet-100    "
-                      />
-                      <button className="btn-sm " onClick={uploadFile}>
-                        {uploading ? "Uploading ..." : "Upload Image"}
-                      </button>
-                    </label>
                   </section>
+                  <label className="flex cursor-pointer  p-6">
+                    <span className="sr-only">Choose profile photo</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      onChange={(event) => {
+                        setImageUpload(event.target.files[0]);
+                      }}
+                      className="block cursor-pointer w-full text-slate-100 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:font-semibold file:bg-violet-200 file:text-blue-700 hover:file:bg-violet-100    "
+                    />
+                  <button className="btn-sm bg-blue-500 inline-flex whitespace-nowrap" onClick={uploadFile}>
+                    {uploading ? "Uploading ..." : "Upload Image"}
+                  </button>
+                  </label>
 
                   <footer className="flex flex-wrap -mx-3 mt-6">
                     <div className="w-full px-3 flex items-center justify-end">
                       <input
                         type="submit"
-                        value="Publish"
+                        value="upload"
                         className="btn max-w-sm text-white bg-blue-600 hover:bg-blue-700 w-full"
                       />
                     </div>

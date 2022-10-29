@@ -1,24 +1,17 @@
-// // Import the functions you need from the SDKs you need
+// Import the functions you need from the SDKs you need
 // import { initializeApp } from "firebase/app";
-// import { getStorage } from "firebase/storage";
-// // import firebase from "firebase/compat/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
+// Your web app's Firebase configuration
 export const firebaseConfig = {
-  apiKey: "AIzaSyBTfNmsNCtikcrgsJR-Dfeqi9XhDWIWARY",
-  authDomain: "the-servant-19cd9.firebaseapp.com",
-  // databaseURL: "https://the-servant-19cd9-default-rtdb.firebaseio.com/",
-  projectId: "the-servant-19cd9",
-  storageBucket: "the-servant-19cd9.appspot.com",
-  messagingSenderId: "355503069337",
-  appId: "1:355503069337:web:120c79752ec9f7b20a8008",
+  apiKey: "AIzaSyD05qYjPI46yyHxAWTYSi6ODckHqW7pAmM",
+  authDomain: "photography-9dc12.firebaseapp.com",
+  projectId: "photography-9dc12",
+  storageBucket: "photography-9dc12.appspot.com",
+  messagingSenderId: "309728852359",
+  appId: "1:309728852359:web:6ae9fb273639cf9f317b22",
 };
 
-// // Initialize Firebase
-// // const app = initializeApp(firebaseConfig);
-// // if (!firebase.apps.length) {
-// //   var app = initializeApp(firebaseConfig);
-// // } else {
-// //   var app = firebase.app(); // if already initialized, use that one
-// // }
-// // Firebase storage reference
-// export const storage = getStorage(initializeApp(firebaseConfig));
+// Initialize Firebase
+// const app = initializeApp(firebaseConfig);
