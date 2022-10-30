@@ -21,18 +21,29 @@ function SignUp() {
     twitter,
     instagram,
   }) => {
+    // console.log(
+    //   name,
+    //   email,
+    //   password,
+    //   description,
+    //   facebook,
+    //   twitter,
+    //   instagram
+    // );
     axios
       .post(`${process.env.REACT_APP_SERVER_ROOT_URL}/api/users`, {
         name,
         email,
         password,
         description,
-        
-        facebook,
-        twitter,
-        instagram,
+        socialMedia: {
+          facebook,
+          twitter,
+          instagram,
+        },
       })
       .then(function (res) {
+        console.log(res);
         reset();
         ToastifySuccess("Successfully Registered");
         // console.log("new user", res);

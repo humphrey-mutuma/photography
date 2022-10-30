@@ -8,7 +8,8 @@ import bcrypt from "bcryptjs";
 // @access Public
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password, description, socialMedia } = req.body;
-  if (!name || !email || !password || description) {
+
+  if (!name || !email || !password || !description) {
     res.status(400);
     throw new Error("Please add name, email, password, and description");
   }

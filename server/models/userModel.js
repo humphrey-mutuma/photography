@@ -21,8 +21,8 @@ const userSchema = new Schema(
       required: [true, "Please add  bio"],
     },
     socialMedia: {
-      type: Array,
-      // required: [true, "Please add  bio"],
+      type: Map,
+      of: String,
     },
     gallery: {
       type: Array,
