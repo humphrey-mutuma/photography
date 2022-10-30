@@ -7,11 +7,12 @@ import {
   ToastifyFailure,
   ToastifySuccess,
 } from "../components/Toastify/Toastify";
+import { useUserContext } from "../context/UserContext";
 
 function SignIn() {
   const { register, reset, handleSubmit } = useForm();
-
-  // signup user
+  const { setUserData } = useUserContext();
+   // signup user
   const onSubmit = ({ email, password }) => {
     axios
       .post(`${process.env.REACT_APP_SERVER_ROOT_URL}/api/users/login`, {
@@ -19,9 +20,10 @@ function SignIn() {
         password,
       })
       .then(function (res) {
+        setUserData(res.data);
         reset();
         ToastifySuccess("Successfully Logged In");
-        console.log("new user", res);
+        // console.log("new user", res);
       })
       .catch(function (error) {
         // console.log(error);

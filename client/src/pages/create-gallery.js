@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useDropzone } from "react-dropzone";
 import NavBar from "../components/NavBar";
 import axios from "axios";
 import {
@@ -17,7 +16,6 @@ import {
 } from "firebase/storage";
 
 function CreateGallery() {
-  const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
   const [imageUpload, setImageUpload] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
   const storage = getStorage(initializeApp(firebaseConfig));
@@ -60,11 +58,6 @@ function CreateGallery() {
       });
   };
 
-  const files = acceptedFiles.map((file) => (
-    <li key={file.path}>
-      {file.path} - {file.size} bytes
-    </li>
-  ));
   return (
     <div className="flex flex-col min-h-screen overflow-hidden bg-black">
       {/*  Site header */}
@@ -82,25 +75,6 @@ function CreateGallery() {
               {/* Form */}
               <div className="  mx-auto">
                 <main>
-                  {/* dropzone */}
-                  <section className="container bg-white   rounded-md border-2 border-dashed border-blue-500">
-                    <div
-                      className="p-10 m-12 h-10 "
-                      {...getRootProps({ className: "dropzone" })}
-                    >
-                      <input
-                        className="border-red-600  m-12 h-10 border-2 p-10 bg-emerald-400 cursor-pointer"
-                        {...getInputProps()}
-                      />
-                      <p>
-                        Drag 'n' drop some files here, or click to select files
-                      </p>
-                    </div>
-                    <aside>
-                      <h4>Files</h4>
-                      <ul>{files}</ul>
-                    </aside>
-                  </section>
                   <label className="flex cursor-pointer  p-6">
                     <span className="sr-only">Choose profile photo</span>
                     <input
