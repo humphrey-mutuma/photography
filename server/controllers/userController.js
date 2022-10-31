@@ -80,6 +80,10 @@ const loginUser = asyncHandler(async (req, res) => {
 // @access private
 const updateUser = asyncHandler(async (req, res) => {
   const { photos } = req.body;
+  // console.log(photos);
+  // console.log(JSON.stringify(req.headers));
+  // console.log(req.user.id);
+  // console.log(...photos);
   if (photos.length === 0) {
     res.status(400);
     throw new Error("Please add a description and photos");
@@ -95,7 +99,7 @@ const updateUser = asyncHandler(async (req, res) => {
   // update the user gallery
   const updateUserPhotos = await User.findOneAndUpdate(
     { _id: req.user.id },
-    { $push: { gallery: photos } },
+    { $push: { gallery: { $each: photos } } },
     { upsert: true, new: true, runValidators: true }
   );
   if (updateUserPhotos) {

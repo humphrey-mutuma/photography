@@ -14,48 +14,61 @@ import {
   uploadBytes,
   getDownloadURL,
 } from "firebase/storage";
+import { useUserContext } from "../context/UserContext";
 
 function CreateGallery() {
   const [imageUpload, setImageUpload] = useState(null);
-  const [imageUrl, setImageUrl] = useState("");
+  const [imageUrl, setImageUrl] = useState([]);
   const storage = getStorage(initializeApp(firebaseConfig));
   const [uploading, setUploading] = useState(false);
-
+  const { userData } = useUserContext();
   // upload image to firebase storage
+  console.log("nn", userData);
   const uploadFile = () => {
-    if (imageUpload == null) return;
-    const imageRef = imageReference(
-      storage,
-      `${""}/${imageUpload.name + uuidv4()}`
-    );
-    // eslint-disable-next-line no-unused-expressions, no-sequences
-    setUploading(true),
-      uploadBytes(imageRef, imageUpload).then((snapshot) => {
-        getDownloadURL(snapshot.ref).then((url) => {
-          ToastifySuccess("Successfully Uploaded Images");
-          // eslint-disable-next-line no-unused-expressions, no-sequences
-          setUploading(false), setImageUpload(null), setImageUrl(url);
+    const config = {
+      data: {
+        photos: imageUrl,
+      },
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${userData.token}`,
+      },
+    };
+    if (userData) {
+      if (imageUpload == null) return;
+      const imageRef = imageReference(
+        storage,
+        `/${uuidv4() + imageUpload.name}`
+      );
+      // eslint-disable-next-line no-unused-expressions, no-sequences
+      setUploading(true),
+        uploadBytes(imageRef, imageUpload).then((snapshot) => {
+          getDownloadURL(snapshot.ref).then((url) => {
+            // eslint-disable-next-line no-unused-expressions, no-sequences
+            setUploading(false),
+              setImageUpload(null),
+              setImageUrl((previousImages) => [...previousImages, url]);
+            axios
+              .patch(
+                `${process.env.REACT_APP_SERVER_ROOT_URL}/api/users/`,
+                { data: { photos: imageUrl } },
+                {
+                  headers: { Authorization: `Bearer ${userData.token}` },
+                }
+              )
+              .then(function (res) {
+                ToastifySuccess("Successfully Uploaded Image");
+                console.log("new user", res);
+              })
+              .catch(function (error) {
+                // console.log(error);
+                ToastifyFailure("Invalid Credentials");
+              });
+          });
         });
-      });
-  };
-
-  console.log("Imagexx", imageUrl);
-
-  // signup user
-  const onSubmit = ({ email, password }) => {
-    axios
-      .post(`${process.env.REACT_APP_SERVER_ROOT_URL}/api/users/`, {
-        email,
-        password,
-      })
-      .then(function (res) {
-        ToastifySuccess("Successfully Logged In");
-        console.log("new user", res);
-      })
-      .catch(function (error) {
-        // console.log(error);
-        ToastifyFailure("Invalid Credentials");
-      });
+    } else {
+      alert("Login");
+    }
   };
 
   return (
@@ -75,7 +88,7 @@ function CreateGallery() {
               {/* Form */}
               <div className="  mx-auto">
                 <main>
-                  <label className="flex cursor-pointer  p-6">
+                  <label className="flex cursor-pointer border border-dashed p-6">
                     <span className="sr-only">Choose profile photo</span>
                     <input
                       type="file"
@@ -93,14 +106,6 @@ function CreateGallery() {
                       {uploading ? "Uploading ..." : "Upload Image"}
                     </button>
                   </label>
-
-                  <footer className="flex flex-wrap -mx-3 mt-6">
-                    <div className="w-full px-3 flex items-center justify-end">
-                      <button className="btn max-w-sm text-white bg-blue-600 hover:bg-blue-700 w-full">
-                        upload
-                      </button>
-                    </div>
-                  </footer>
                 </main>
               </div>
             </div>

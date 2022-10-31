@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { Icon } from "@iconify/react";
-import { Fade } from "react-reveal";
-
+ 
 export default function NavBar() {
   return (
     <nav id="header" className=" w-full z-50 top-0 sm:px-10 ">
@@ -41,9 +40,7 @@ export default function NavBar() {
                 className="inline-block text-blue-300 no-underline hover:text-pink-500 hover:text-underline text-center h-10 p-2 md:h-auto md:p-4 transform hover:scale-125 duration-300 ease-in-out"
                 href="https://twitter.com/HumphreyMutuma_"
               >
-                <Fade left duration={2000}>
-                  <Icon className="w-6 h-6 shrink-0" icon="logos:twitter" />{" "}
-                </Fade>
+                <Icon className="w-6 h-6 shrink-0" icon="logos:twitter" />{" "}
               </a>
             </li>
             <li>
@@ -53,12 +50,7 @@ export default function NavBar() {
                 className="inline-block text-white no-underline hover:text-pink-500 hover:text-underline text-center h-10 p-2 md:h-auto md:p-4 transform hover:scale-125 duration-300 ease-in-out"
                 href="https://github.com/humphrey-mutuma/photography"
               >
-                <Fade left duration={2000}>
-                  <Icon
-                    className="w-8 h-8 shrink-0 "
-                    icon="arcticons:github"
-                  />{" "}
-                </Fade>
+                <Icon className="w-8 h-8 shrink-0 " icon="arcticons:github" />{" "}
               </a>
             </li>
 
