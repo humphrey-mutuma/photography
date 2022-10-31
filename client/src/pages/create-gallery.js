@@ -23,19 +23,12 @@ function CreateGallery() {
   const [uploading, setUploading] = useState(false);
   const { userData } = useUserContext();
   // upload image to firebase storage
-  console.log("nn", userData);
+  // console.log("nn", );
   const uploadFile = () => {
-    const config = {
-      data: {
-        photos: imageUrl,
-      },
-      headers: {
-        "Content-type": "application/json",
-        Authorization: `Bearer ${userData.token}`,
-      },
-    };
+    // console.log(imageUrl);
     if (userData) {
       if (imageUpload == null) return;
+
       const imageRef = imageReference(
         storage,
         `/${uuidv4() + imageUpload.name}`
@@ -51,13 +44,24 @@ function CreateGallery() {
             axios
               .patch(
                 `${process.env.REACT_APP_SERVER_ROOT_URL}/api/users/`,
-                { data: { photos: imageUrl } },
                 {
-                  headers: { Authorization: `Bearer ${userData.token}` },
+                  photos: imageUrl,
+                },
+                {
+                  headers: {
+                    // "content-type": "application/json",
+                    authorization: `Bearer ${userData.token}`,
+                  },
                 }
               )
               .then(function (res) {
-                ToastifySuccess("Successfully Uploaded Image");
+                console.log(res.status);
+                if (res.status === 201) {
+                  setImageUrl([]);
+                  ToastifySuccess("Successfully Uploaded Image");
+                } else {
+                  ToastifyFailure("Something went wrong");
+                }
                 console.log("new user", res);
               })
               .catch(function (error) {

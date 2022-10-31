@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
 import { Icon } from "@iconify/react";
- 
+import { useUserContext } from "../../context/UserContext";
+
 export default function NavBar() {
+  const { userData } = useUserContext();
+
   return (
     <nav id="header" className=" w-full z-50 top-0 sm:px-10 ">
       <div className="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 py-2">
@@ -13,7 +16,7 @@ export default function NavBar() {
             />
           </Link>
         </div>
-        <div className="block lg:hidden pr-4">
+        <div className="block sm:hidden pr-4">
           <button
             id="nav-toggle"
             className="flex items-center p-1 text-pink-800 hover:text-gray-900 focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out"
@@ -29,10 +32,10 @@ export default function NavBar() {
           </button>
         </div>
         <div
-          className="w-full flex-grow lg:flex lg:items-center lg:w-auto hidden mt-2 lg:mt-0 bg-white lg:bg-transparent text-black p-4 lg:p-0 z-20"
+          className="w-full flex-grow sm:flex sm:items-center sm:w-auto hidden mt-2 sm:mt-0 bg-white sm:bg-transparent text-black p-4 sm:p-0 z-20"
           id="nav-content"
         >
-          <ul className="list-reset lg:flex justify-end flex-1 items-center space-x-6">
+          <ul className="list-reset sm:flex justify-end flex-1 items-center space-x-6">
             <li>
               <a
                 target="_blank"
@@ -56,12 +59,21 @@ export default function NavBar() {
 
             {/* Site navigation */}
             <li>
-              <Link
-                to="/signin"
-                className="btn-sm font-medium text-black bg-white  hover:text-gray-900 px-5 py-3 flex items-center transition  ease-in-out transform hover:scale-125 duration-300"
-              >
-                Log in
-              </Link>
+              {userData === null ? (
+                <Link
+                  to="/signin"
+                  className="btn-sm font-medium text-black bg-white  hover:text-gray-900 px-5 py-3 flex items-center transition  ease-in-out transform hover:scale-125 duration-300"
+                >
+                  Log in
+                </Link>
+              ) : (
+                <Link
+                  to="/create-gallery"
+                  className="btn-sm font-medium text-black bg-white  hover:text-gray-900 px-5 py-3 flex items-center transition  ease-in-out transform hover:scale-125 duration-300"
+                >
+                  Create Gallery
+                </Link>
+              )}
             </li>
           </ul>
         </div>

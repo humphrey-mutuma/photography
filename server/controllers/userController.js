@@ -80,7 +80,7 @@ const loginUser = asyncHandler(async (req, res) => {
 // @access private
 const updateUser = asyncHandler(async (req, res) => {
   const { photos } = req.body;
-  // console.log(photos);
+  console.log("kkmx", req.headers);
   // console.log(JSON.stringify(req.headers));
   // console.log(req.user.id);
   // console.log(...photos);
@@ -110,7 +110,6 @@ const updateUser = asyncHandler(async (req, res) => {
       description: updateUserPhotos.description,
       socialMedia: updateUserPhotos.socialMedia,
       gallery: updateUserPhotos.gallery,
-      token: generateToken(updateUserPhotos._id),
     });
   } else {
     res.status(500);
