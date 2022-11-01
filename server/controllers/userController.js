@@ -135,10 +135,10 @@ const getUser = asyncHandler(async (req, res) => {
 // @route GET /api/users
 // @access Public
 const getUsers = asyncHandler(async (req, res) => {
-  const users = await User.find(); //find user by email
+  const users = await User.find({}, { password: 0 }).sort({ createdAt: -1 }); //find user by email
   if (!users) {
     res.status(400);
-    throw new Error("Not users in the database");
+    throw new Error("No users in the database");
   }
   res.status(200).json(users);
 });
