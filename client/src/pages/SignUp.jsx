@@ -17,6 +17,7 @@ import {
   uploadBytes,
   getDownloadURL,
 } from "firebase/storage";
+import { useNavigate } from "react-router-dom";
 
 function SignUp() {
   const { register, reset, handleSubmit } = useForm();
@@ -25,6 +26,8 @@ function SignUp() {
   const [imageUrl, setImageUrl] = useState("");
   const storage = getStorage(initializeApp(firebaseConfig));
   const [uploading, setUploading] = useState(false);
+    const navigate = useNavigate();
+
   // upload image to firebase storage
   const uploadFile = () => {
     if (imageUpload == null) return;
@@ -69,6 +72,7 @@ function SignUp() {
       .then(function (res) {
         setUserData(res.data);
         setImageUrl("");
+        navigate("/create-gallery");
         reset();
         ToastifySuccess("Successfully Registered");
         console.log("reg user", res);

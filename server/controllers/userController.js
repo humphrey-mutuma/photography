@@ -126,9 +126,10 @@ const updateUser = asyncHandler(async (req, res) => {
 // @route GET /api/users/:id
 // @access Private
 const getUser = asyncHandler(async (req, res) => {
-  // get user id from the protect middleware
-  // const user = await User.findById(req.user.id);
-  res.status(200).json(req.user);
+  // get user id from the params
+  console.log(req.params);
+  const user = await User.findById(req.params.userId, "-password");
+  res.status(200).json(user);
 });
 
 // @desc get all users in the database

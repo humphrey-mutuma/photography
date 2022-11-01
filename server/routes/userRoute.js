@@ -13,6 +13,6 @@ import protect from "../middleware/authMiddleware.js";
 // create crud routes
 router.route("/").post(registerUser).get(getUsers).patch(protect, updateUser);
 router.route("/login").post(loginUser);
-router.route("/:id").get(protect, getUser).delete(protect, deleteUser);
+router.route("/:userId").get(getUser).delete(protect, deleteUser);
 
 export default router;

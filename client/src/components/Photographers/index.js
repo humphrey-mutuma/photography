@@ -2,79 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Socials from "../sideMenu/Socials";
-const photographers = [
-  {
-    _id: "jgfnfkd7",
-    name: "Alex pablo",
-    image: "https://cdn.tuk.dev/assets/photo-1564061170517-d3907caa96ea.jfif",
-    category: "Street Photographer",
-    socialMedia: [],
-  },
-  {
-    _id: "jgddfnfk",
 
-    name: "Jane Doe",
-    image: "https://cdn.tuk.dev/assets/photo-1530577197743-7adf14294584.jfif",
-    category: "Cars Lover",
-    socialMedia: [],
-  },
-  {
-    _id: "jgfnfk",
-
-    name: "Sam Onli",
-    image: "https://cdn.tuk.dev/assets/photo-1564061170517-d3907caa96ea.jfif",
-    category: "Nature Photographer",
-    socialMedia: [],
-  },
-  {
-    _id: "jsdgfnfk",
-
-    name: "Milliano pablo",
-    image: "https://cdn.tuk.dev/assets/photo-1530577197743-7adf14294584.jfif",
-    category: "Pets Lover",
-    socialMedia: [],
-  },
-  {
-    _id: "6jgfnfk",
-
-    name: "Sandro Anthony",
-    image: "https://cdn.tuk.dev/assets/photo-1566753323558-f4e0952af115.jfif",
-    category: " Football lover",
-    socialMedia: [],
-  },
-  {
-    _id: "jgfnf6k",
-
-    name: "Sam Onli",
-    image: "https://cdn.tuk.dev/assets/photo-1564061170517-d3907caa96ea.jfif",
-    category: "Nature Photographer",
-    socialMedia: [],
-  },
-  {
-    _id: "jgfenfk",
-
-    name: "Milliano pablo",
-    image: "https://cdn.tuk.dev/assets/photo-1530577197743-7adf14294584.jfif",
-    category: "Pets Lover",
-    socialMedia: [],
-  },
-  {
-    _id: "jgfknfk",
-
-    name: "Sam Onli",
-    image: "https://cdn.tuk.dev/assets/photo-1564061170517-d3907caa96ea.jfif",
-    category: "Nature Photographer",
-    socialMedia: [],
-  },
-  {
-    _id: "jlgfnfk",
-
-    name: "Sandro Anthony",
-    image: "https://cdn.tuk.dev/assets/photo-1566753323558-f4e0952af115.jfif",
-    category: " Football lover",
-    socialMedia: [],
-  },
-];
 export default function Photographers() {
   const [users, setUsers] = useState([]);
   useEffect(() => {
@@ -93,7 +21,7 @@ export default function Photographers() {
       });
   }, []);
 
-  console.log("users", users);
+  // console.log("users", users);
   return (
     <main>
       <header>
@@ -121,7 +49,6 @@ export default function Photographers() {
                         <img
                           src={photographer.profilePic}
                           alt={photographer.name}
-                          role="img"
                           className="rounded-full object-cover h-full w-full shadow-sm"
                         />
                       ) : (

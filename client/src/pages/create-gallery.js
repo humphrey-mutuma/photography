@@ -22,8 +22,9 @@ function CreateGallery() {
   const storage = getStorage(initializeApp(firebaseConfig));
   const [uploading, setUploading] = useState(false);
   const { userData } = useUserContext();
+
   // upload image to firebase storage
-  // console.log("nn", );
+  // console.log("nn", userData);
   const uploadFile = () => {
     // console.log(imageUrl);
     if (userData) {
@@ -31,7 +32,7 @@ function CreateGallery() {
 
       const imageRef = imageReference(
         storage,
-        `/${uuidv4() + imageUpload.name}`
+        `${userData.id}/${uuidv4() + imageUpload.name}`
       );
       // eslint-disable-next-line no-unused-expressions, no-sequences
       setUploading(true),

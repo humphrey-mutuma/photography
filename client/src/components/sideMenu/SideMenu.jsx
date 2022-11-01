@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 import Socials from "./Socials";
 
-const SideMenu = () => {
+const SideMenu = ({ user }) => {
   const [hiddenMenu, setHiddenMenu] = useState(true);
   const ref = useRef(null);
 
@@ -37,27 +37,46 @@ const SideMenu = () => {
           </svg>{" "}
           back
         </NavLink>
-        <img
-          className="burger-icon w-52 h-52 object-cover rounded-full cursor-pointer  z-10 "
-          onClick={ToggleMenu}
-          ref={ref}
-          src="https://cdn.pixabay.com/photo/2016/11/18/19/07/happy-1836445__340.jpg"
-          alt=""
-        ></img>
+        <div className="w-44 h-44 lg:w-52 lg:h-52">
+          {user.profilePic ? (
+            <img
+              onClick={ToggleMenu}
+              ref={ref}
+              src={user.profilePic}
+              alt={user.name}
+              className="burger-icon w-44 h-44 lg:w-52 lg:h-52 object-cover rounded-full cursor-pointer  z-10 "
+            />
+          ) : (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="burger-icon w-44 h-44 lg:w-52 lg:h-52 object-cover rounded-full cursor-pointer  z-10 "
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z"
+              />
+            </svg>
+          )}
+        </div>
         <h1 className="sm:text-xl md:text-3xl font-semibold font-namefont text-center uppercase text-white  ">
-          <span className="">Jane Doe</span>
+          <span className="">{user.name}</span>
         </h1>{" "}
         <h1 className="sm:text-lg md:text-xl  font-namefont text-center uppercase  text-white ">
-          <span className="">Street Photographer</span>
+          <span className="">{user.description}</span>
         </h1>
-        <Socials />
+        <Socials socialMedia={user.socialMedia} />
         <a
           className="text-sm"
-          href="https://github.com/catherineisonline/travel-with-catherine"
+          href="https://github.com/humphrey-mutuma"
           target="_blank"
           rel="noreferrer"
         >
-          &copy; 2022 Humphrey Mutuma
+          &copy; {new Date().getFullYear()} {user.name}
         </a>
       </nav>
     </header>

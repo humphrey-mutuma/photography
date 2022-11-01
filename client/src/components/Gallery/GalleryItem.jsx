@@ -1,7 +1,7 @@
 const GalleryItem = ({ imagesToShow }) => {
   return (
     <section className="image-list  grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3   mx-auto justify-items-center overflow-hidden w-full ">
-      {imagesToShow.slice(0, 12).map((img) => (
+      {imagesToShow?.slice(0, 12).map((img) => (
         <section className="card-zoom" key={img.id}>
           <img
             src={img.src}
