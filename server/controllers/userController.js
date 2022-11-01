@@ -7,7 +7,8 @@ import bcrypt from "bcryptjs";
 // @route POST /api/users
 // @access Public
 const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, password, description, socialMedia } = req.body;
+  const { name, email, password, description, socialMedia, profilePic } =
+    req.body;
 
   if (!name || !email || !password || !description) {
     res.status(400);
@@ -30,6 +31,7 @@ const registerUser = asyncHandler(async (req, res) => {
     email,
     password: hashedPassword,
     description,
+    profilePic,
     socialMedia,
   });
   if (newUser) {
@@ -38,6 +40,7 @@ const registerUser = asyncHandler(async (req, res) => {
       name: newUser.name,
       email: newUser.email,
       description: newUser.description,
+      profilePic: newUser.profilePic,
       socialMedia: newUser.socialMedia,
       gallery: newUser.gallery,
       token: generateToken(newUser._id),
@@ -65,6 +68,7 @@ const loginUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       description: user.description,
+      profilePic: user.profilePic,
       socialMedia: user.socialMedia,
       gallery: user.gallery,
       token: generateToken(user._id),
@@ -90,8 +94,8 @@ const updateUser = asyncHandler(async (req, res) => {
   }
 
   // verify owner (this is the signed in user)
-  const owner = await User.findById(req.user.id); //get user.id from protect middleware
-  if (!owner) {
+  // const owner = await User.findById(req.user.id); //get user.id from protect middleware
+  if (!req.user) {
     res.status(400);
     throw new Error("User not found");
   }
@@ -108,6 +112,7 @@ const updateUser = asyncHandler(async (req, res) => {
       name: updateUserPhotos.name,
       email: updateUserPhotos.email,
       description: updateUserPhotos.description,
+      profilePic: updateUserPhotos.profilePic,
       socialMedia: updateUserPhotos.socialMedia,
       gallery: updateUserPhotos.gallery,
     });
@@ -122,8 +127,8 @@ const updateUser = asyncHandler(async (req, res) => {
 // @access Private
 const getUser = asyncHandler(async (req, res) => {
   // get user id from the protect middleware
-  const user = await User.findById(req.user.id);
-  res.status(200).json(user);
+  // const user = await User.findById(req.user.id);
+  res.status(200).json(req.user);
 });
 
 // @desc get all users in the database

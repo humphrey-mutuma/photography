@@ -90,8 +90,8 @@ function CreateGallery() {
               </div>
 
               {/* Form */}
-              <div className="  mx-auto">
-                <main>
+              <>
+                <main className="  mx-auto">
                   <label className="flex cursor-pointer border border-dashed p-6">
                     <span className="sr-only">Choose profile photo</span>
                     <input
@@ -111,7 +111,7 @@ function CreateGallery() {
                     </button>
                   </label>
                 </main>
-              </div>
+              </>
             </div>
           </div>
         </section>

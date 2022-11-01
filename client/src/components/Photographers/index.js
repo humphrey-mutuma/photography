@@ -1,3 +1,4 @@
+import axios from "axios";
 import { Link } from "react-router-dom";
 import Socials from "../sideMenu/Socials";
 const photographers = [
@@ -74,6 +75,20 @@ const photographers = [
   },
 ];
 export default function Photographers() {
+  axios
+    .get(`${process.env.REACT_APP_SERVER_ROOT_URL}/api/users/`)
+    .then(function (response) {
+      // handle success
+      console.log(response);
+    })
+    .catch(function (error) {
+      // handle error
+      console.log(error);
+    })
+    .then(function () {
+      // always executed
+    });
+
   return (
     <main>
       <header>
@@ -85,31 +100,31 @@ export default function Photographers() {
       <section
         role="list"
         aria-label="Photographers "
-        class="flex flex-col sm:flex-row w-full  px-6 items-center xl:justify-between flex-wrap md:justify-around sm:justify-around lg:justify-around"
+        className="flex flex-col sm:flex-row w-full  px-6 items-center xl:justify-between flex-wrap md:justify-around sm:justify-around lg:justify-around"
       >
         {photographers.map((photographer) => (
           <Link
             to={photographer._id}
             key={photographer.name}
-            class=" cursor-pointer w-full  sm:w-1/2 md:w-1/3 relative mt-16  mb-14  sm:mb-24 xl:max-w-sm lg:w-1/4"
+            className=" cursor-pointer w-full  sm:w-1/2 md:w-1/3 relative mt-16  mb-14  sm:mb-24 xl:max-w-sm lg:w-1/4"
           >
             <section role="listitem">
-              <div class="rounded overflow-hidden shadow-md ">
-                <div class="absolute -mt-20 w-full flex justify-center">
-                  <div class="h-36 w-36">
+              <div className="rounded overflow-hidden shadow-md ">
+                <div className="absolute -mt-20 w-full flex justify-center">
+                  <div className="h-36 w-36">
                     <img
                       src={photographer.image}
                       alt={photographer.name}
                       role="img"
-                      class="rounded-full object-cover h-full w-full shadow-sm"
+                      className="rounded-full object-cover h-full w-full shadow-sm"
                     />
                   </div>
                 </div>
-                <div class=" mt-16">
-                  <h1 class="font-bold  text-white text-3xl text-mono text-center mb-1 text-ellipsis">
+                <div className=" mt-16">
+                  <h1 className="font-bold  text-white text-3xl text-mono text-center mb-1 text-ellipsis">
                     {photographer.name}
                   </h1>
-                  <p class="text-slate-100  text-sm text-center text-ellipsis">
+                  <p className="text-slate-100  text-sm text-center text-ellipsis">
                     {photographer.category}
                   </p>
 

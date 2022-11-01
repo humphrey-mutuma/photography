@@ -20,6 +20,10 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Please add  bio"],
     },
+    profilePic: {
+      type: String,
+      // required: [true, "Please add  profile"],
+    },
     socialMedia: {
       type: Map,
       of: String,
