@@ -41,12 +41,12 @@ function CreateGallery() {
             // eslint-disable-next-line no-unused-expressions, no-sequences
             setUploading(false),
               setImageUpload(null),
-              setImageUrl((previousImages) => [...previousImages, url]);
+              // setImageUrl((previousImages) => [...previousImages, url]);
             axios
               .patch(
                 `${process.env.REACT_APP_SERVER_ROOT_URL}/api/users/`,
                 {
-                  photos: imageUrl,
+                  photos: url,
                 },
                 {
                   headers: {
@@ -56,17 +56,17 @@ function CreateGallery() {
                 }
               )
               .then(function (res) {
-                console.log(res.status);
+                // console.log(res.status);
                 if (res.status === 201) {
-                  setImageUrl([]);
+                  // setImageUrl([]);
                   ToastifySuccess("Successfully Uploaded Image");
                 } else {
                   ToastifyFailure("Something went wrong");
                 }
-                console.log("new user", res);
+                // console.log("new user", res);
               })
               .catch(function (error) {
-                // console.log(error);
+                console.log("errr", error);
                 ToastifyFailure("Invalid Credentials");
               });
           });

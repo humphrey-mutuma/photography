@@ -8,11 +8,13 @@ import {
   ToastifySuccess,
 } from "../components/Toastify/Toastify";
 import { useUserContext } from "../context/UserContext";
+import { useNavigate } from "react-router-dom";
 
 function SignIn() {
   const { register, reset, handleSubmit } = useForm();
   const { setUserData } = useUserContext();
-   // signup user
+     const navigate = useNavigate();
+// signup user
   const onSubmit = ({ email, password }) => {
     axios
       .post(`${process.env.REACT_APP_SERVER_ROOT_URL}/api/users/login`, {
@@ -21,7 +23,8 @@ function SignIn() {
       })
       .then(function (res) {
         setUserData(res.data);
-        reset();
+        reset();        navigate("/create-gallery");
+
         ToastifySuccess("Successfully Logged In");
         // console.log("new user", res);
       })
@@ -136,7 +139,7 @@ function SignIn() {
                   Don’t you have an account?{" "}
                   <Link
                     to="/signup"
-                    className="text-blue-600 hover:underline transition duration-150 ease-in-out"
+                    className="text-blue-600 cursor-pointer hover:underline transition duration-150 ease-in-out"
                   >
                     Sign up
                   </Link>

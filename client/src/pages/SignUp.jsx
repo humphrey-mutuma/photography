@@ -26,7 +26,7 @@ function SignUp() {
   const [imageUrl, setImageUrl] = useState("");
   const storage = getStorage(initializeApp(firebaseConfig));
   const [uploading, setUploading] = useState(false);
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
   // upload image to firebase storage
   const uploadFile = () => {
@@ -45,7 +45,7 @@ function SignUp() {
       });
   };
 
-  console.log(imageUrl);
+  // console.log(imageUrl);
   // signup user
   const onSubmit = ({
     name,
@@ -75,7 +75,7 @@ function SignUp() {
         navigate("/create-gallery");
         reset();
         ToastifySuccess("Successfully Registered");
-        console.log("reg user", res);
+        // console.log("reg user", res);
       })
       .catch(function (error) {
         // console.log(error);
@@ -321,7 +321,7 @@ function SignUp() {
                   Already registered?{" "}
                   <Link
                     to="/signin"
-                    className="text-blue-600 hover:underline transition duration-150 ease-in-out"
+                    className="text-blue-600 cursor-pointer hover:underline transition duration-150 ease-in-out"
                   >
                     Log in
                   </Link>

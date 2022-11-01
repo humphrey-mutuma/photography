@@ -18,14 +18,15 @@ export default function GalleryPage() {
       })
       .catch(function (error) {
         // handle error
-        console.log(error);
+        // console.log(error);
+        throw new Error("Something went wrong");
       })
       .then(function () {
         // always executed
       });
   }, [userId]);
 
-  console.log("user", user);
+  // console.log("user", user);
   return (
     <main className="grid grid-cols-10 bg-black">
       <section className=" hidden sm:block sm:col-span-2">

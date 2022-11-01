@@ -41,15 +41,15 @@ export default function Photographers() {
             className=" cursor-pointer w-full    sm:w-1/2 md:w-1/3 relative mt-16  mb-14  sm:mb-24 xl:max-w-sm lg:w-1/4"
           >
             <section role="listitem">
-              <div className="rounded overflow-hidden shadow-md ">
+              <section className="rounded group overflow-hidden shadow-md ">
                 <Link to={photographer._id}>
                   <div className="absolute  -mt-20 w-full flex justify-center">
-                    <div className="h-36 w-36">
+                    <div className="h-36 w-36 overflow-hidden rounded-full">
                       {photographer.profilePic ? (
                         <img
                           src={photographer.profilePic}
                           alt={photographer.name}
-                          className="rounded-full object-cover h-full w-full shadow-sm"
+                          className="group-hover:transition  ease-in-out transform hover:scale-125 duration-300 rounded-full  object-cover h-full w-full shadow-sm"
                         />
                       ) : (
                         <svg
@@ -80,7 +80,7 @@ export default function Photographers() {
                     </p>
                   </div>
                 </Link>
-              </div>
+              </section>
               <Socials socialMedia={photographer.socialMedia} />
             </section>
           </div>
