@@ -1,5 +1,3 @@
-
-import galleryImages from "../../data/GalleryOne";
 import GalleryItem from "./GalleryItem";
 
 const Gallery = ({ photos }) => {
