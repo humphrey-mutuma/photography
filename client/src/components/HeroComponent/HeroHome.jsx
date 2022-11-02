@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
+import { useUserContext } from "../../context/UserContext";
 
 function HeroHome() {
+    const { userData } = useUserContext();
+
   return (
-    <section className="relative ">
+    <section className="relative max-w-7xl mx-auto  ">
       {/* Illustration behind hero content */}
       <div
         className="absolute left-1/2 transform -translate-x-1/2 bottom-0 pointer-events-none"
@@ -103,7 +106,7 @@ function HeroHome() {
               className="text-5xl md:text-6xl font-extrabold leading-tighter tracking-tighter mb-4 text-white"
               data-aos="zoom-y-out"
             >
-              Life is an adventure. <br />
+              Life is an adventure <br />
               <span className="bg-clip-text text-transparent text-4xl md:text-5xl bg-gradient-to-r from-blue-500 to-teal-400">
                 Capture every minute.
               </span>
@@ -124,12 +127,21 @@ function HeroHome() {
                 data-aos-delay="300"
               >
                 <div>
-                  <Link
-                    to="/create-gallery"
-                    className="btn text-white bg-blue-600 hover:bg-blue-700 w-full mb-4 sm:w-auto sm:mb-0"
-                  >
-                    Create Gallery
-                  </Link>
+                  {userData ? (
+                    <Link
+                      to="/create-gallery"
+                      className="btn text-white bg-blue-600 hover:bg-blue-700 w-full mb-4 sm:w-auto sm:mb-0"
+                    >
+                      Create Gallery
+                    </Link>
+                  ) : (
+                    <Link
+                      to="/signin"
+                      className="btn text-white bg-blue-600 hover:bg-blue-700 w-full mb-4 sm:w-auto sm:mb-0"
+                    >
+                      Create Gallery
+                    </Link>
+                  )}
                 </div>
                 <div>
                   <li>
@@ -156,7 +168,7 @@ function HeroHome() {
           </div>
 
           {/* Hero image */}
-          {/* <div>
+          <div>
             <div
               className="relative flex justify-center mb-8"
               data-aos="zoom-y-out"
@@ -231,7 +243,7 @@ function HeroHome() {
                 </svg>
               </div>
             </div>
-          </div>*/}
+          </div>
         </div>
       </div>
     </section>

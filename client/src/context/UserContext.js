@@ -8,7 +8,6 @@ export function UserWrapper({ children }) {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    console.log("token", token);
     axios
       .get(`${process.env.REACT_APP_SERVER_ROOT_URL}/api/users/user`, {
         headers: {
@@ -16,7 +15,6 @@ export function UserWrapper({ children }) {
         },
       })
       .then((res) => {
-        console.log("ctx", res);
         setUserData(res.data);
       })
       .catch((err) => {
