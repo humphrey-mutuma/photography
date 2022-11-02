@@ -12,16 +12,16 @@ export default function GalleryPage() {
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_SERVER_ROOT_URL}/api/users/${userId}`)
-      .then(function (res) {
+      .then((res) => {
         // handle success
+        console.log(res);
         setUser(res.data);
       })
-      .catch(function (error) {
-        // handle error
-        // console.log(error);
+      .catch((error) => {
+         // console.log(error);
         throw new Error("Something went wrong");
       })
-      .then(function () {
+      .then(() => {
         // always executed
       });
   }, [userId]);

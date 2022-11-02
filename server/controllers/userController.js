@@ -121,9 +121,9 @@ const updateUser = asyncHandler(async (req, res) => {
 });
 
 // @desc get a user data
-// @route GET /api/users/:id
+// @route GET /api/users/user
 // @access Private
-const getUser = asyncHandler(async (req, res) => {
+const getLoggedInUser = asyncHandler(async (req, res) => {
   // get user id from the params
   const user = await User.findById(
     req.user.id,
@@ -132,11 +132,23 @@ const getUser = asyncHandler(async (req, res) => {
   res.status(200).json(user);
 });
 
+// @desc get a user data
+// @route GET /api/users/:userId
+// @access Private
+const getUser = asyncHandler(async (req, res) => {
+  // get user id from the params
+  const user = await User.findById(req.params.userId, "-password");
+  res.status(200).json(user);
+});
+
 // @desc get all users in the database
 // @route GET /api/users
 // @access Public
 const getUsers = asyncHandler(async (req, res) => {
-  const users = await User.find({}, '_id profilePic name description socialMedia')
+  const users = await User.find(
+    {},
+    "_id profilePic name description socialMedia"
+  )
     .sort({ createdAt: -1 })
     .lean(); //find user by email
   if (!users) {
@@ -166,4 +178,12 @@ const generateToken = (id) => {
   });
 };
 
-export { registerUser, updateUser, loginUser, getUser, getUsers, deleteUser };
+export {
+  registerUser,
+  updateUser,
+  loginUser,
+  getLoggedInUser,
+  getUser,
+  getUsers,
+  deleteUser,
+};
