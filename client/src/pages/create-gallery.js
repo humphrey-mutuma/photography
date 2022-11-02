@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
 import axios from "axios";
 import {
@@ -15,6 +15,7 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import { useUserContext } from "../context/UserContext";
+import { useNavigate } from "react-router-dom";
 
 function CreateGallery() {
   const [imageUpload, setImageUpload] = useState(null);
@@ -22,7 +23,13 @@ function CreateGallery() {
   const storage = getStorage(initializeApp(firebaseConfig));
   const [uploading, setUploading] = useState(false);
   const { userData } = useUserContext();
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    if (!userData) {
+      navigate("/signup");
+    }
+  }, [userData]);
   // upload image to firebase storage
   // console.log("nn", userData);
   const uploadFile = () => {
@@ -42,33 +49,33 @@ function CreateGallery() {
             setUploading(false),
               setImageUpload(null),
               // setImageUrl((previousImages) => [...previousImages, url]);
-            axios
-              .patch(
-                `${process.env.REACT_APP_SERVER_ROOT_URL}/api/users/`,
-                {
-                  photos: url,
-                },
-                {
-                  headers: {
-                    // "content-type": "application/json",
-                    authorization: `Bearer ${userData.token}`,
+              axios
+                .patch(
+                  `${process.env.REACT_APP_SERVER_ROOT_URL}/api/users/`,
+                  {
+                    photos: url,
                   },
-                }
-              )
-              .then(function (res) {
-                // console.log(res.status);
-                if (res.status === 201) {
-                  // setImageUrl([]);
-                  ToastifySuccess("Successfully Uploaded Image");
-                } else {
-                  ToastifyFailure("Something went wrong");
-                }
-                // console.log("new user", res);
-              })
-              .catch(function (error) {
-                console.log("errr", error);
-                ToastifyFailure("Invalid Credentials");
-              });
+                  {
+                    headers: {
+                      // "content-type": "application/json",
+                      authorization: `Bearer ${userData.token}`,
+                    },
+                  }
+                )
+                .then(function (res) {
+                  // console.log(res.status);
+                  if (res.status === 201) {
+                    // setImageUrl([]);
+                    ToastifySuccess("Successfully Uploaded Image");
+                  } else {
+                    ToastifyFailure("Something went wrong");
+                  }
+                  // console.log("new user", res);
+                })
+                .catch(function (error) {
+                  console.log("errr", error);
+                  ToastifyFailure("Invalid Credentials");
+                });
           });
         });
     } else {
@@ -87,7 +94,9 @@ function CreateGallery() {
             <div className=" pb-12 pt-6 md:pb-20">
               {/* Page header */}
               <div className="max-w-3xl mx-auto text-center pb-6 md:pb-10">
-                <h1 className="h1 text-white">{userData  ? "Add more photos" :"Create a gallery now"}</h1>
+                <h1 className="h1 text-white">
+                  {userData ? "Add more photos" : "Create a gallery now"}
+                </h1>
               </div>
 
               {/* Form */}
