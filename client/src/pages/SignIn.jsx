@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import { useForm } from "react-hook-form";
@@ -13,8 +13,10 @@ import { useNavigate } from "react-router-dom";
 function SignIn() {
   const { register, reset, handleSubmit } = useForm();
   const { setUserData } = useUserContext();
-     const navigate = useNavigate();
-// signup user
+  const navigate = useNavigate();
+
+
+  // signup user
   const onSubmit = ({ email, password }) => {
     axios
       .post(`${process.env.REACT_APP_SERVER_ROOT_URL}/api/users/login`, {
@@ -22,9 +24,11 @@ function SignIn() {
         password,
       })
       .then(function (res) {
+        // store token in local storage
+        localStorage.setItem("token", res.data.token);
         setUserData(res.data);
-        reset();        navigate("/create-gallery");
-
+        reset();
+        navigate("/create-gallery");
         ToastifySuccess("Successfully Logged In");
         // console.log("new user", res);
       })

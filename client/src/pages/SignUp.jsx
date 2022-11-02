@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import { useForm } from "react-hook-form";
@@ -21,12 +21,18 @@ import { useNavigate } from "react-router-dom";
 
 function SignUp() {
   const { register, reset, handleSubmit } = useForm();
-  const { setUserData } = useUserContext();
+  const { userData, setUserData } = useUserContext();
   const [imageUpload, setImageUpload] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
   const storage = getStorage(initializeApp(firebaseConfig));
   const [uploading, setUploading] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (userData) {
+      navigate("/create-gallery");
+    }
+  }, [userData]);
 
   // upload image to firebase storage
   const uploadFile = () => {
@@ -70,6 +76,8 @@ function SignUp() {
         profilePic: imageUrl,
       })
       .then(function (res) {
+        // store token in local storage
+        localStorage.setItem("token", res.data.token);
         setUserData(res.data);
         setImageUrl("");
         navigate("/create-gallery");

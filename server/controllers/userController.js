@@ -15,7 +15,7 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new Error("Please add name, email, password, and description");
   }
   // check if user is already registred
-  const userExists = await User.findOne({ email: email });
+  const userExists = await User.findOne({ email: email }).lean();
   if (userExists) {
     res.status(400).json({ msg: "login" });
     throw new Error("User already exists, Login");
@@ -60,7 +60,7 @@ const loginUser = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("Please add email and password");
   }
-  const user = await User.findOne({ email: email }); //find user by email
+  const user = await User.findOne({ email: email }).lean(); //find user by email
 
   if (user && (await bcrypt.compare(password, user.password))) {
     res.status(200).json({
@@ -84,11 +84,9 @@ const loginUser = asyncHandler(async (req, res) => {
 // @access private
 const updateUser = asyncHandler(async (req, res) => {
   const { photos } = req.body;
-  console.log("kkmx", req.headers);
-  // console.log(JSON.stringify(req.headers));
-  // console.log(req.user.id);
-  // console.log(...photos);
-  if (photos.length === 0) {
+  // console.log("photos", photos);
+
+  if (photos === "") {
     res.status(400);
     throw new Error("Please add a description and photos");
   }
@@ -103,9 +101,9 @@ const updateUser = asyncHandler(async (req, res) => {
   // update the user gallery
   const updateUserPhotos = await User.findOneAndUpdate(
     { _id: req.user.id },
-    { $push: { gallery: { $each: photos } } },
+    { $push: { gallery: photos } },
     { upsert: true, new: true, runValidators: true }
-  );
+  ).lean();
   if (updateUserPhotos) {
     res.status(201).json({
       id: updateUserPhotos._id,
@@ -127,8 +125,10 @@ const updateUser = asyncHandler(async (req, res) => {
 // @access Private
 const getUser = asyncHandler(async (req, res) => {
   // get user id from the params
-  console.log(req.params);
-  const user = await User.findById(req.params.userId, "-password");
+  const user = await User.findById(
+    req.user.id,
+    "_id name email profilePic"
+  ).lean();
   res.status(200).json(user);
 });
 
@@ -136,7 +136,9 @@ const getUser = asyncHandler(async (req, res) => {
 // @route GET /api/users
 // @access Public
 const getUsers = asyncHandler(async (req, res) => {
-  const users = await User.find({}, { password: 0 }).sort({ createdAt: -1 }); //find user by email
+  const users = await User.find({}, '_id profilePic name description socialMedia')
+    .sort({ createdAt: -1 })
+    .lean(); //find user by email
   if (!users) {
     res.status(400);
     throw new Error("No users in the database");

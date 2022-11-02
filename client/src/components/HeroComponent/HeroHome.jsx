@@ -134,10 +134,10 @@ function HeroHome() {
                 <div>
                   <li>
                     <Link
-                      to="/signup"
+                      to="/signin"
                       className="btn text-white bg-gray-900 hover:bg-gray-800 w-full sm:w-auto sm:ml-4"
                     >
-                      <span>Sign up</span>
+                      <span>Sign In</span>
                       <svg
                         className="w-3 h-3 fill-current text-gray-400 flex-shrink-0 ml-2 -mr-1"
                         viewBox="0 0 12 12"

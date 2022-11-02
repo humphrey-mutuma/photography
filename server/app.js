@@ -1,6 +1,8 @@
 import express, { json, urlencoded } from "express";
 import createError from "http-errors";
-// import { join } from "path";
+import path from "path";
+import url from "url";
+
 import colors from "colors";
 import cookieParser from "cookie-parser";
 import * as dotenv from "dotenv"; // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
@@ -11,7 +13,12 @@ import dbConnect from "./config/dbConnect.js";
 import errorHandler from "./middleware/errorMiddleware.js";
 // import router
 import usersRoute from "./routes/userRoute.js";
- 
+
+// 
+const __filename = url.fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -27,7 +34,7 @@ app.use(cookieParser());
 
 // routes
 app.use("/api/users", usersRoute);
- 
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
@@ -35,6 +42,23 @@ app.use(function (req, res, next) {
 
 // error middleware
 app.use(errorHandler);
+
+// console.log(__filename);
+// console.log(path.resolve(__dirname, "../", "client", "build", "index.html"));
+
+
+// server client.
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../client/build")));
+
+  app.get("*", (req, res) =>
+    res.sendFile(
+      path.resolve(__dirname, "../client/build/index.html")
+    )
+  );
+} else {
+  app.get("/", (req, res) => res.send("You are not in production"));
+}
 
 // error handler
 app.use(function (err, req, res, next) {

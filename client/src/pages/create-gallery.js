@@ -18,7 +18,7 @@ import { useUserContext } from "../context/UserContext";
 
 function CreateGallery() {
   const [imageUpload, setImageUpload] = useState(null);
-  const [imageUrl, setImageUrl] = useState([]);
+  // const [imageUrl, setImageUrl] = useState([]);
   const storage = getStorage(initializeApp(firebaseConfig));
   const [uploading, setUploading] = useState(false);
   const { userData } = useUserContext();
