@@ -87,7 +87,7 @@ function CreateGallery() {
             <div className=" pb-12 pt-6 md:pb-20">
               {/* Page header */}
               <div className="max-w-3xl mx-auto text-center pb-6 md:pb-10">
-                <h1 className="h1 text-white">Create a gallery now.</h1>
+                <h1 className="h1 text-white">{userData  ? "Add more photos" :"Create a gallery now"}</h1>
               </div>
 
               {/* Form */}

@@ -12,9 +12,14 @@ import { useNavigate } from "react-router-dom";
 
 function SignIn() {
   const { register, reset, handleSubmit } = useForm();
-  const { setUserData } = useUserContext();
+  const { userData, setUserData } = useUserContext();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (userData) {
+      navigate("/create-gallery");
+    }
+  }, [userData]);
 
   // signup user
   const onSubmit = ({ email, password }) => {

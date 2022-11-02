@@ -10,7 +10,7 @@ export default function Home() {
       <CarouselComponent />
       <section className="absolute bg-black opacity-80  scrollbar-hide h-screen overflow-y-scroll inset-0 z-30 text-black text-2xl font-bold">
         <section className="max-w-7xl mx-auto">
-          <section className=" text-white">
+          <section className=" text-white relative">
             <NavBar />
             <HeroHome />
             <Photographers />
